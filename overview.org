@@ -28,3 +28,39 @@ source .venv/bin/activate
 #+BEGIN_SRC python
 uv add pygame==2.6.1
 #+END_SRC
+*** Running the game
+- In the root directory run: 
+#+BEGIN_SRC python
+uv run main.py
+#+END_SRC
+
+- In python main.py, main() function is only called when this file is
+   run directly; it won't run if it's imported as a module. It's
+   considered the "pythonic" way to structure an executable program in
+   Python. Technically, the program will work fine by just calling
+   main() but you might get an angry letter from Guido van Rossum if you don't.
+#+BEGIN_SRC python
+if __name__ == "__main__":
+    main()
+#+END_SRC
+- This should now print "Starting Asteroids!" :ch:
+** File Management
+- We don't want to have a single file in our development.
+- In Python, each file is called a module that we can import
+   functions, classes and variables.
+- Module name is a file name without .py extension.
+
+#+BEGIN_SRC  python
+# import the connect_database function
+# and the database_version variable
+# from database.py into the current file
+from database import connect_database, database_version
+
+## IMPORT EVERYTHING from FILE
+from database import *             ## Only import what you need, not everything
+
+## OR
+import constants                   ## Another way of importing everything.
+#+END_SRC
+** CONSTANTS
+- Games often have a lot of magic numbers to represent things like player speeds, item costs, and attack damage. We will use this file as a place to store those kind of constant values. 
