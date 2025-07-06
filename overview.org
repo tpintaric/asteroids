@@ -3,14 +3,14 @@
 - Will utilize bootdev cli utilities.
 ** uv package manager
 - An extremely fast Python package and project manager, written in Rust.
-- Install in arch using pacman
+- Install in arch using:  pacman -S uv
 ** Pygame & Virtual Envrionment
 - Pygame is a module for developing games using Python. It provides simple functions and methods for us to easily draw images within a GUI window and handle user input.
 - Virtual environments are Python's way to keep dependencies (e.g. the pygame module) separate from other projects on our machine. For example, we need pygame version 2 for this project, but another project on your computer might require version 1.
 
 - As a best practice, each Python project on your machine should have
    its own virtual environment to keep them isolated from each other.
-*** Setup
+*** Setup & Activation
 #+BEGIN_SRC conf
 uv 06_Asteoroids_Game      # Located at: ~/workspace/github.com/tpintaric/projects/06_Asteroids_Game/
 cd 06_Asteroids_Game
@@ -19,5 +19,12 @@ source .venv/bin/activate
 
 ## For fish to activate virtual python envrionment run:
 . .venv/bin/activate.fish
-(06_Asteroids_Game) ✔︎ 06_Asteroids_Game (main) ✗ 
+(06_Asteroids_Game) ✔︎ 06_Asteroids_Game (main)
+
+# For bash or other shells use:
+source .venv/bin/activate
+#+END_SRC
+*** Add python dependencies
+#+BEGIN_SRC python
+uv add pygame==2.6.1
 #+END_SRC
