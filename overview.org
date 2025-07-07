@@ -57,10 +57,33 @@ if __name__ == "__main__":
 from database import connect_database, database_version
 
 ## IMPORT EVERYTHING from FILE
-from database import *             ## Only import what you need, not everything
+from database import *             ## Only import what you need, ok for small files
 
 ## OR
 import constants                   ## Another way of importing everything.
 #+END_SRC
 ** CONSTANTS
 - Games often have a lot of magic numbers to represent things like player speeds, item costs, and attack damage. We will use this file as a place to store those kind of constant values. 
+
+#+BEGIN_SRC python
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+
+ASTEROID_MIN_RADIUS = 20
+ASTEROID_KINDS = 3
+ASTEROID_SPAWN_RATE = 0.8  # seconds
+ASTEROID_MAX_RADIUS = ASTEROID_MIN_RADIUS * ASTEROID_KINDS
+#+END_SRC
+** Set Screen size
+#+BEGIN_SRC python
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+#+END_SRC
+
+** While Loop for Games
+- Game generally has 3 steps:
+  1. Check for player inputs
+  2. Update the game world
+  3. Draw the game to the screen
+
+*** Infinite While Loop
+
