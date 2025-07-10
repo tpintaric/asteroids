@@ -86,4 +86,31 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
   3. Draw the game to the screen
 
 *** Infinite While Loop
+- while True:   => Means that it is infinite loop
+- for event in pygame.event.get()
+   This will check if the user has closed the window and exit the game loop if they do. It will make the window's close button work.
+#+BEGIN_SRC python
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return        screen.fill("black")
+    pygame.display.flip()
+#+END_SRC
+**** CPU usage
+- Currently our game is using too much CPU
+- We need to restrist drawing our black screen to 60 FPS = Frames per Second 
+- We add clock variable that creates a new clock object
+- we then set dt variable to 0 (used later)
+- we specify that dt = clock that ticks 60 times in a second only.
 
+#+BEGIN_SRC python
+clock = pygame.time.Clock()
+dt = 0
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return        screen.fill("black")
+    pygame.display.flip()
+    dt = clock.tick(60) / 1000
+#+END_SRC

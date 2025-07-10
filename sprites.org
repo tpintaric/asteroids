@@ -1,0 +1,33 @@
+* Pygame Sprites
+- In pygame, there is a base class called Sprite, to represent visual objects.
+- In our game, asteroids are visually represented as circles, and the player is a triangle. However, detecting collisions between circles and triangles is hard. To avoid this problem, we can cheat a little bit: the player will secretly be a circle.
+- Let's create a CircleShape class that inherits from Sprite to represent objects in our game that are treated as circles (even if they aren't).
+
+    Create a new circleshape.py file and paste in the following code:
+#+BEGIN_SRC python
+import pygame
+
+# Base class for game objects
+class CircleShape(pygame.sprite.Sprite):
+    def __init__(self, x, y, radius):
+        # we will be using this later
+        if hasattr(self, "containers"):
+            super().__init__(self.containers)
+        else:
+            super().__init__()
+
+        self.position = pygame.Vector2(x, y)
+        self.velocity = pygame.Vector2(0, 0)
+        self.radius = radius
+
+    def draw(self, screen):
+        # sub-classes must override
+        pass
+
+    def update(self, dt):
+        # sub-classes must override
+        pass
+#+END_SRC
+- CircleShape extends the Sprite class to also store a position, velocity, and radius.
+- Later you'll write subclasses of CircleShape and override the draw and update methods with the logic for that particular game object.
+
