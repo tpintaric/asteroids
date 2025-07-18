@@ -116,5 +116,160 @@ while True:
 #+END_SRC
 ** Final Code
 *** player.py
+#+BEGIN_SRC python
+
+#+END_SRC
+
 *** constants.py
+#+BEGIN_SRC python
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+
+ASTEROID_MIN_RADIUS = 20
+ASTEROID_KINDS = 3
+ASTEROID_SPAWN_RATE = 0.8  # seconds
+ASTEROID_MAX_RADIUS = ASTEROID_MIN_RADIUS * ASTEROID_KINDS
+PLAYER_RADIUS = 20
+PLAYER_TURN_SPEED = 300
+PLAYER_SPEED = 200
+#+END_SRC
+
 *** main.py
+#+BEGIN_SRC python
+import pygame
+import sys
+from asteroid import Asteroid
+from constants import *
+from player import Player
+from asteroidfield import *
+
+pygame.init()
+
+def main():
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    clock = pygame.time.Clock()
+    dt = 0
+
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = updatable
+    Player.containers = (updatable, drawable)
+
+    player = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+    asteroid = AsteroidField()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return        screen.fill("black")
+        updatable.update(dt)
+        for asteroid in asteroids:
+           if asteroid.collision(player):
+              print("Game Over!") 
+              sys.exit(1)
+              
+        #player.update(dt)
+        screen.fill("black")
+        #drawable.draw(screen)
+        for sprite in drawable:
+            sprite.draw(screen)
+
+        #player.draw(screen)
+        pygame.display.flip()
+        dt = clock.tick(60) / 1000
+
+if __name__ == "__main__":
+    main()
+
+#+END_SRC
+
+*** circleshape.py
+#+BEGIN_SRC python
+import pygame
+from circleshape import CircleShape
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
+
+class Player(CircleShape):
+    def __init__(self,x, y):
+        super().__init__(x, y, PLAYER_RADIUS)
+        self.rotation = 0
+
+    # in the player class
+    def triangle(self):
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
+        a = self.position + forward * self.radius
+        b = self.position - forward * self.radius - right
+        c = self.position - forward * self.radius + right
+        return [a, b, c]
+
+    def draw(self,screen):
+        pygame.draw.polygon(screen, "white", self.triangle(), 2)
+
+    def rotate(self, dt):
+        self.rotation += (PLAYER_TURN_SPEED * dt)
+
+    def move(self, dt):
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.position += forward * PLAYER_SPEED * dt
+
+    def update(self, dt):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_a]:
+            self.rotate(-dt)
+        if keys[pygame.K_d]:
+            self.rotate(dt)
+        if keys[pygame.K_w]:
+            self.move(-dt)
+        if keys[pygame.K_s]:
+            self.move(dt)
+#+END_SRC
+
+*** flycheck_player.py
+#+BEGIN_SRC python
+import pygame
+from circleshape import CircleShape
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
+
+class Player(CircleShape):
+    def __init__(self, x, y):
+        super().__init__(x, y, PLAYER_RADIUS)
+        self.rotation = 0
+
+    # in the player class
+    def triangle(self):
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
+        a = self.position + forward * self.radius
+        b = self.position - forward * self.radius - right
+        c = self.position - forward * self.radius + right
+        return [a, b, c]
+
+    def draw(self,screen):
+        pygame.draw.polygon(screen, "white", self.triangle(), 2)
+
+    def rotate(self, dt):
+        self.rotation += (PLAYER_TURN_SPEED * dt)
+
+    def move(self, dt):
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.position += forward * PLAYER_SPEED * dt
+
+    def update(self, dt):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_a]:
+            self.rotate(-dt)
+        if keys[pygame.K_d]:
+            self.rotate(dt)
+        if keys[pygame.K_w]:
+            self.move(dt)
+        if keys[pygame.K_s]:
+            self.move(-dt)
+
+#+END_SRC
+
